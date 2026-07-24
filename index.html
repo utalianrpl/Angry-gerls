@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sistem Kas Kelas - Login & Dashboard</title>
+
+<style>
+/* ================= LOGIN ================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+    background:linear-gradient(-45deg,#434257,#054747,#0f3479,#3b0d3b);
+    background-size:400% 400%;
+    animation:bg 12s ease infinite;
+}
+
+@keyframes bg{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+}
+
+/* Floating circles */
+.circle{
+    position:absolute;
+    border-radius:50%;
+    background:rgba(46, 58, 231, 0.137);
+    animation:float 8s infinite ease-in-out;
+}
+
+.circle:nth-child(1){
+    width:220px;
+    height:220px;
+    top:8%;
+    left:10%;
+}
+
+.circle:nth-child(2){
+    width:320px;
+    height:320px;
+    bottom:-80px;
+    right:-80px;
+    animation-delay:2s;
+}
+
+.circle:nth-child(3){
+    width:120px;
+    height:120px;
+    bottom:20%;
+    left:15%;
+    animation-delay:4s;
+}
+
+@keyframes float{
+    50%{
+        transform:translateY(-25px);
+    }
+}
+
+.card{
+    width:360px;
+    padding:40px;
+    border-radius:25px;
+    backdrop-filter:blur(20px);
+    background:rgba(255,255,255,0.12);
+    border:1px solid rgba(255,255,255,0.25);
+    box-shadow:0 20px 40px rgba(0,0,0,.25);
+    color:white;
+    z-index:10;
+}
+
+.logo{
+    width:80px;
+    height:80px;
+    border-radius:50%;
+    margin:auto;
+    background:linear-gradient(135deg,#ffffff,#dfe9f3);
+    color:#6C63FF;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:35px;
+    font-weight:bold;
+    margin-bottom:20px;
+}
+
+h2{
+    text-align:center;
+    margin-bottom:5px;
+}
+
+.subtitle{
+    text-align:center;
+    opacity:.8;
+    margin-bottom:30px;
+    font-size:14px;
+}
+
+.input-box{
+    position:relative;
+    margin-bottom:20px;
+}
+
+.input-box input{
+    width:100%;
+    padding:15px 20px;
+    border:none;
+    outline:none;
+    border-radius:50px;
+    background:rgba(255,255,255,.15);
+    color:white;
+    font-size:15px;
+    transition:.3s;
+}
+
+.input-box input::placeholder{
+    color:rgba(255,255,255,.75);
+}
+
+.input-box input:focus{
+    background:rgba(255,255,255,.25);
+    box-shadow:0 0 15px rgba(255,255,255,.4);
+}
+
+.options{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-size:13px;
+    margin-bottom:20px;
+}
+
+.options a{
+    color:white;
+    text-decoration:none;
+}
+
+.options a:hover{
+    text-decoration:underline;
+}
+
+button{
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:50px;
+    cursor:pointer;
+    background:linear-gradient(90deg,#0c75d6,#0f7c39);
+    color:white;
+    font-size:16px;
+    font-weight:600;
+    transition:.3s;
+}
+
+button:hover{
+    transform:translateY(-3px);
+    box-shadow:0 15px 30px rgba(252,0,255,.4);
+}
+
+.signup{
+    text-align:center;
+    margin-top:25px;
+    font-size:14px;
+}
+
+.signup a{
+    color:white;
+    font-weight:bold;
+    text-decoration:none;
+}
+
+#message{
+    text-align:center;
+    margin-top:18px;
+    font-weight:bold;
+}
+
+
+/* ================= DASHBOARD ================= */
+
+        /* --- 1. DESAIN DASHBOARD FINANSIAL MODERN (CSS) --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #0f172a; color: #f8fafc; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+        
+        .ledger-box { background-color: #1e293b; border: 1px solid #334155; padding: 30px; border-radius: 16px; width: 100%; max-width: 600px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3); }
+        h2 { color: #38bdf8; font-size: 20px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px; }
+        .sub { font-size: 13px; color: #94a3b8; margin-bottom: 25px; }
+        
+        /* Kartu Ringkasan Total Saldo */
+        .saldo-card { background: linear-gradient(135deg, #0284c7, #0369a1); padding: 20px; border-radius: 12px; text-align: center; margin-bottom: 25px; box-shadow: 0 4px 14px rgba(2, 132, 199, 0.3); }
+        .saldo-title { font-size: 12px; text-transform: uppercase; color: #e0f2fe; letter-spacing: 1px; }
+        .saldo-num { font-size: 32px; font-weight: bold; color: #fff; margin-top: 5px; }
+
+        /* Panel Form Transaksi */
+        .form-panel { background: #0f172a; border: 1px solid #334155; padding: 15px; border-radius: 10px; margin-bottom: 25px; }
+        .input-group { display: grid; grid-template-columns: 2fr 1fr 1.5fr; gap: 10px; margin-bottom: 10px; }
+        
+        input, select { width: 100%; background: #1e293b; border: 1px solid #475569; border-radius: 6px; color: #fff; padding: 10px; font-size: 14px; outline: none; }
+        input:focus { border-color: #38bdf8; }
+        
+        button { width: 100%; background: #22c55e; color: white; border: none; padding: 12px; font-size: 14px; font-weight: bold; border-radius: 6px; cursor: pointer; transition: 0.2s; text-transform: uppercase; }
+        button:hover { background: #16a34a; }
+        
+        /* Tabel Riwayat Transaksi Kas */
+        .table-area { width: 100%; overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: left; }
+        th { background-color: #334155; color: #38bdf8; padding: 10px; font-weight: bold; }
+        td { padding: 12px 10px; border-bottom: 1px solid #334155; }
+        
+        .masuk { color: #22c55e; font-weight: bold; }
+        .keluar { color: #f43f5e; font-weight: bold; }
+        .btn-hapus { color: #f43f5e; cursor: pointer; font-weight: bold; text-decoration: underline; }
+    
+
+/* ================= LOGIN / DASHBOARD CONTROL ================= */
+#loginPage {
+    display: flex;
+}
+
+#dashboardPage {
+    display: none;
+    width: 100%;
+}
+
+.logout-btn {
+    width: auto;
+    padding: 8px 16px;
+    margin-top: 15px;
+    background: #f43f5e;
+    border-radius: 6px;
+    font-size: 12px;
+}
+
+.logout-btn:hover {
+    background: #e11d48;
+}
+
+@media (max-width: 650px) {
+    .input-group {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ================= PERBAIKAN DASHBOARD ================= */
+body {
+    align-items: flex-start;
+    overflow-y: auto;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+#dashboardPage {
+    min-height: 100vh;
+    width: 100%;
+    display: none;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 50px 20px;
+}
+
+#dashboardPage .ledger-box {
+    margin: 0 auto;
+}
+
+.signup-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.55);
+}
+
+.signup-card {
+    position: relative;
+    width: 360px;
+    max-width: 100%;
+    padding: 35px;
+    border-radius: 25px;
+    backdrop-filter: blur(20px);
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.25);
+    box-shadow: 0 20px 40px rgba(0,0,0,.35);
+    color: white;
+}
+
+.signup-card .logo {
+    width: 65px;
+    height: 65px;
+    font-size: 28px;
+}
+
+.close-signup {
+    position: absolute;
+    top: 12px;
+    right: 15px;
+    width: auto;
+    padding: 0 8px;
+    background: transparent;
+    font-size: 28px;
+    line-height: 1;
+}
+
+.close-signup:hover {
+    background: transparent;
+    box-shadow: none;
+    transform: none;
+}
+
+#signupMessage {
+    text-align: center;
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+
+/* Membuat checkbox dan teks Remember sejajar */
+.options label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+}
+
+.options label input[type="checkbox"] {
+    width: 15px;
+    height: 15px;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- ================= HALAMAN LOGIN ================= -->
+<div id="loginPage">
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="circle"></div>
+
+    <div class="card">
+        <div class="logo">L</div>
+
+        <h2>Welcome Back</h2>
+        <p class="subtitle">Sign in to continue</p>
+
+        <div class="input-box">
+            <input type="text" id="username" placeholder="Username">
+        </div>
+
+        <div class="input-box">
+            <input type="password" id="password" placeholder="Password">
+        </div>
+
+        <div class="options">
+            <label>
+                <input type="checkbox" id="rememberMe">
+                Remember
+            </label>
+
+            <a href="#" onclick="bukaLupaPassword(); return false;">Forgot Password?</a>
+        </div>
+
+        <button onclick="login()">LOGIN</button>
+
+        <p id="message"></p>
+
+        <div class="signup">
+            Don't have an account?
+            <a href="#" onclick="bukaDaftar(); return false;">Create one</a>
+        </div>
+    </div>
+</div>
+
+<div id="signupModal" class="signup-modal">
+    <div class="signup-card">
+        <button class="close-signup" onclick="tutupDaftar()">×</button>
+        <div class="logo">L</div>
+        <h2>Buat Akun</h2>
+        <p class="subtitle">Daftarkan akun untuk mengakses kas kelas</p>
+
+        <div class="input-box">
+            <input type="text" id="signupUsername" placeholder="Buat Username">
+        </div>
+
+        <div class="input-box">
+            <input type="password" id="signupPassword" placeholder="Buat Password">
+        </div>
+
+        <div class="input-box">
+            <input type="password" id="signupConfirmPassword" placeholder="Konfirmasi Password">
+        </div>
+
+        <button onclick="buatAkun()">BUAT AKUN</button>
+        <p id="signupMessage"></p>
+    </div>
+</div>
+
+
+<div id="forgotPasswordModal" class="signup-modal">
+    <div class="signup-card">
+        <button class="close-signup" onclick="tutupLupaPassword()">×</button>
+        <div class="logo">?</div>
+        <h2>Lupa Password</h2>
+        <p class="subtitle">Masukkan username dan password baru</p>
+
+        <div class="input-box">
+            <input type="text" id="forgotUsername" placeholder="Username">
+        </div>
+
+        <div class="input-box">
+            <input type="password" id="newPassword" placeholder="Password Baru">
+        </div>
+
+        <div class="input-box">
+            <input type="password" id="confirmNewPassword" placeholder="Konfirmasi Password Baru">
+        </div>
+
+        <button onclick="resetPassword()">UBAH PASSWORD</button>
+        <p id="forgotMessage"></p>
+    </div>
+</div>
+
+<!-- ================= DASHBOARD KAS ================= -->
+<div id="dashboardPage">
+    
+
+    <!-- --- 2. STRUKTUR HALAMAN UTAMA (HTML) --- -->
+    <div class="ledger-box">
+        <h2>angry girly</h2>
+        <p class="sub">Sistem Manajemen Buku Kas Finansial Lokal - 10 RPL</p>
+<p id="currentUserDisplay" style="font-size:12px;color:#94a3b8;margin-bottom:15px;"></p>
+
+        <!-- KARTU INDIKATOR SALDO UTAMA -->
+        <div class="saldo-card">
+            <div class="saldo-title">Total Saldo Kas Terkini</div>
+            <div class="saldo-num" id="totalSaldoDisplay">Rp 0</div>
+        </div>
+
+        <!-- FORM INPUT TRANSAKSI BARU -->
+        <div class="form-panel">
+            <div class="input-group">
+                <input type="text" id="namaSiswa" placeholder="Nama Siswa / Keterangan">
+                <select id="jenisTransaksi">
+                    <option value="masuk">Uang Masuk</option>
+                    <option value="keluar">Uang Keluar</option>
+                </select>
+                <input type="number" id="nominalUang" placeholder="Nominal (Rp)">
+            </div>
+            <button onclick="catatTransaksiBaru()">Catat & Update Pembukuan</button>
+        </div>
+
+        <!-- TABEL REKOR TRANSAKSI -->
+        <div style="font-size: 14px; font-weight: bold; margin-bottom: 10px; color: #cbd5e1;">RIWAYAT TRANSAKSI TERAKHIR:</div>
+        <div class="table-area">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Siswa / Keterangan</th>
+                        <th>Tipe</th>
+                        <th>Nominal</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="tabelTransaksiBody">
+                    <!-- Data transaksi disuntikkan secara dinamis ke sini -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- --- 3. LOGIKA OPERASI CRUD DATA FINANSIAL (JAVASCRIPT) --- -->
+    <script>
+        // FUNGSI UTAMA: MENYIMPAN TRANSAKSI BARU KE DALAM LOCALSTORAGE
+        function catatTransaksiBaru() {
+            const nama = document.getElementById("namaSiswa").value.trim();
+            const jenis = document.getElementById("jenisTransaksi").value;
+            const nominal = parseInt(document.getElementById("nominalUang").value);
+
+            // Validasi Input Data
+            if (nama === "" || isNaN(nominal) || nominal <= 0) {
+                alert("Harap masukkan nama keterangan dan nominal uang yang valid!");
+                return;
+            }
+
+            // Buat struktur objek cetakan rekor data keuangan
+            const dataTransaksi = {
+                id: Date.now(), // ID unik berbasis milidetik waktu waktu saat ini
+                keterangan: nama,
+                tipe: jenis,
+                jumlah: nominal
+            };
+
+            // Ambil database kas lama, gabungkan dengan rekor transaksi baru
+            let databaseKas = JSON.parse(localStorage.getItem("classLedgerDB")) || [];
+            databaseKas.push(dataTransaksi);
+
+            // Tanam kembali array data ke memori permanen browser
+            localStorage.setItem("classLedgerDB", JSON.stringify(databaseKas));
+
+            // Bersihkan kotak input form pasca pencatatan sukses
+            document.getElementById("namaSiswa").value = "";
+            document.getElementById("nominalUang").value = "";
+
+            prosesHitungDanMuatUlang();
+        }
+
+        // FUNGSI KALKULASI TOTAL MATEMATIKA SALDO & MERENDER TABEL
+        function prosesHitungDanMuatUlang() {
+            const tbody = document.getElementById("tabelTransaksiBody");
+            tbody.innerHTML = "";
+
+            let databaseKas = JSON.parse(localStorage.getItem("classLedgerDB")) || [];
+            let akumulasiSaldo = 0;
+
+            if (databaseKas.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#64748b;">Belum ada riwayat transaksi kas kelas.</td></tr>`;
+                document.getElementById("totalSaldoDisplay").innerText = "Rp 0";
+                return;
+            }
+
+            // Loop Logika Kelas 10: Membaca riwayat data sekaligus menghitung total uang kas
+            databaseKas.forEach(item => {
+                const baris = document.createElement("tr");
+
+                // If-Else Percabangan: Jika uang masuk menambah saldo, jika uang keluar mengurangi saldo
+                let simbolTipe = "";
+                let classWarna = "";
+                if (item.tipe === "masuk") {
+                    akumulasiSaldo += item.jumlah;
+                    simbolTipe = "Masuk";
+                    classWarna = "masuk";
+                } else {
+                    akumulasiSaldo -= item.jumlah;
+                    simbolTipe = "Keluar";
+                    classWarna = "keluar";
+                }
+
+                // Render baris tabel HTML
+                baris.innerHTML = `
+                    <td><strong>${item.keterangan}</strong></td>
+                    <td class="${classWarna}">${simbolTipe}</td>
+                    <td class="${classWarna}">Rp ${item.jumlah.toLocaleString('id-ID')}</td>
+                    <td><span class="btn-hapus" onclick="hapusTransaksi(${item.id})">Hapus</span></td>
+                `;
+                tbody.appendChild(baris);
+            });
+
+            // Update papan total saldo akhir (Menerapkan format mata uang Rupiah)
+            document.getElementById("totalSaldoDisplay").innerText = "Rp " + akumulasiSaldo.toLocaleString('id-ID');
+        }
+
+        // FUNGSI MENGHAPUS DATA (DELETE) BERBASIS FILTERING ARRAY
+        function hapusTransaksi(idTarget) {
+            if (confirm("Apakah Anda yakin ingin menghapus rekor catatan kas ini?")) {
+                let databaseKas = JSON.parse(localStorage.getItem("classLedgerDB")) || [];
+                
+                // Logika Filter: Menyaring dan menyisakan data yang ID-nya tidak cocok dengan ID target hapus
+                databaseKas = databaseKas.filter(item => item.id !== idTarget);
+                
+                localStorage.setItem("classLedgerDB", JSON.stringify(databaseKas));
+                prosesHitungDanMuatUlang();
+            }
+        }
+
+        // Jalankan render otomatis saat aplikasi dibuka pertama kali
+        prosesHitungDanMuatUlang();
+    </script>
+
+</div>
+
+<script>
+// ================= LOGIN SYSTEM =================
+
+// Cek apakah pengguna sudah login sebelumnya
+function cekStatusLogin() {
+    const sudahLogin = localStorage.getItem("classLedgerLoggedIn");
+
+    if (sudahLogin === "true") {
+        tampilkanDashboard();
+    } else {
+        tampilkanLogin();
+    }
+}
+
+// Tampilkan dashboard dan sembunyikan login
+function tampilkanDashboard() {
+    document.getElementById("loginPage").style.display = "none";
+    document.getElementById("dashboardPage").style.display = "flex";
+
+    // Muat data kas
+    prosesHitungDanMuatUlang();
+}
+
+// Tampilkan login dan sembunyikan dashboard
+function tampilkanLogin() {
+    document.getElementById("loginPage").style.display = "flex";
+    document.getElementById("dashboardPage").style.display = "none";
+}
+
+// Logout
+function logout() {
+    if (confirm("Apakah Anda yakin ingin logout?")) {
+        localStorage.removeItem("classLedgerLoggedIn");
+        localStorage.removeItem("classLedgerCurrentUser");
+        tampilkanLogin();
+
+        document.getElementById("username").value = "";
+        document.getElementById("password").value = "";
+        document.getElementById("message").innerHTML = "";
+    }
+}
+
+
+
+// ================= SISTEM BUAT AKUN =================
+
+// Ambil daftar akun yang tersimpan
+function ambilAkun() {
+    return JSON.parse(localStorage.getItem("classLedgerAccounts")) || [];
+}
+
+// Buka form pendaftaran
+function bukaDaftar() {
+    document.getElementById("signupModal").style.display = "flex";
+    document.getElementById("signupMessage").innerHTML = "";
+}
+
+// Tutup form pendaftaran
+function tutupDaftar() {
+    document.getElementById("signupModal").style.display = "none";
+    document.getElementById("signupUsername").value = "";
+    document.getElementById("signupPassword").value = "";
+    document.getElementById("signupConfirmPassword").value = "";
+    document.getElementById("signupMessage").innerHTML = "";
+}
+
+// Buat akun baru
+function buatAkun() {
+    const username = document.getElementById("signupUsername").value.trim();
+    const password = document.getElementById("signupPassword").value;
+    const confirmPassword = document.getElementById("signupConfirmPassword").value;
+    const message = document.getElementById("signupMessage");
+
+    if (username === "" || password === "" || confirmPassword === "") {
+        message.style.color = "#FFD4D4";
+        message.innerHTML = "✖ Semua kolom harus diisi.";
+        return;
+    }
+
+    if (password !== confirmPassword) {
+        message.style.color = "#FFD4D4";
+        message.innerHTML = "✖ Konfirmasi password tidak cocok.";
+        return;
+    }
+
+    let accounts = ambilAkun();
+
+    const akunSudahAda = accounts.some(
+        akun => akun.username.toLowerCase() === username.toLowerCase()
+    );
+
+    if (akunSudahAda) {
+        message.style.color = "#FFD4D4";
+        message.innerHTML = "✖ Username sudah digunakan.";
+        return;
+    }
+
+    accounts.push({
+        username: username,
+        password: password
+    });
+
+    localStorage.setItem("classLedgerAccounts", JSON.stringify(accounts));
+
+    message.style.color = "#7CFF8D";
+    message.innerHTML = "✔ Akun berhasil dibuat! Silakan login.";
+
+    setTimeout(() => {
+        tutupDaftar();
+        document.getElementById("username").value = username;
+        document.getElementById("password").value = "";
+    }, 1000);
+}
+
+// Update fungsi login agar menerima akun buatan pengguna
+function login() {
+    const user = document.getElementById("username").value.trim();
+    const pass = document.getElementById("password").value;
+    const message = document.getElementById("message");
+
+    let accounts = ambilAkun();
+
+    // Akun bawaan
+    let loginValid = (user === "admin" && pass === "12345");
+
+    // Cek akun yang dibuat pengguna
+    if (!loginValid) {
+        loginValid = accounts.some(
+            akun => akun.username === user && akun.password === pass
+        );
+    }
+
+    if (loginValid) {
+        message.style.color = "#7CFF8D";
+        message.innerHTML = "✔ Login Successful!";
+
+        localStorage.setItem("classLedgerLoggedIn", "true");
+        localStorage.setItem("classLedgerCurrentUser", user);
+
+        setTimeout(() => {
+            tampilkanDashboard();
+        }, 500);
+    } else {
+        message.style.color = "#FFD4D4";
+        message.innerHTML = "✖ Invalid Username or Password";
+    }
+}
+
+
+// ================= SISTEM LUPA PASSWORD =================
+
+// Buka form lupa password
+function bukaLupaPassword() {
+    document.getElementById("forgotPasswordModal").style.display = "flex";
+    document.getElementById("forgotMessage").innerHTML = "";
+}
+
+// Tutup form lupa password
+function tutupLupaPassword() {
+    document.getElementById("forgotPasswordModal").style.display = "none";
+
+    document.getElementById("forgotUsername").value = "";
+    document.getElementById("newPassword").value = "";
+    document.getElementById("confirmNewPassword").value = "";
+    document.getElementById("forgotMessage").innerHTML = "";
+}
+
+// Reset password akun
+function resetPassword() {
+    const username = document.getElementById("forgotUsername").value.trim();
+    const newPassword = document.getElementById("newPassword").value;
+    const confirmPassword = document.getElementById("confirmNewPassword").value;
+    const message = document.getElementById("forgotMessage");
+
+    if (username === "" || newPassword === "" || confirmPassword === "") {
+        message.style.color = "#FFD4D4";
+        message.innerHTML = "✖ Semua kolom harus diisi.";
+        return;
+    }
+
+    if (newPassword !== confirmPassword) {
+        message.style.color = "#FFD4D4";
+        message.innerHTML = "✖ Konfirmasi password tidak cocok.";
+        return;
+    }
+
+    // Ambil akun yang sudah dibuat
+    let accounts = JSON.parse(localStorage.getItem("classLedgerAccounts")) || [];
+
+    // Cari akun berdasarkan username
+    const accountIndex = accounts.findIndex(
+        akun => akun.username.toLowerCase() === username.toLowerCase()
+    );
+
+    // Akun admin bawaan tidak bisa diubah melalui fitur ini
+    if (username.toLowerCase() === "admin") {
+        message.style.color = "#FFD4D4";
+        message.innerHTML = "✖ Password akun admin bawaan tidak dapat diubah.";
+        return;
+    }
+
+    if (accountIndex === -1) {
+        message.style.color = "#FFD4D4";
+        message.innerHTML = "✖ Username tidak ditemukan.";
+        return;
+    }
+
+    // Update password
+    accounts[accountIndex].password = newPassword;
+
+    // Simpan kembali akun yang sudah diperbarui
+    localStorage.setItem("classLedgerAccounts", JSON.stringify(accounts));
+
+    message.style.color = "#7CFF8D";
+    message.innerHTML = "✔ Password berhasil diubah!";
+
+    // Setelah berhasil, kembali ke halaman login
+    setTimeout(() => {
+        tutupLupaPassword();
+        document.getElementById("username").value = username;
+        document.getElementById("password").value = "";
+        document.getElementById("message").style.color = "#7CFF8D";
+        document.getElementById("message").innerHTML = "Silakan login dengan password baru.";
+    }, 1000);
+}
+
+// ================= SISTEM KAS KELAS =================
+
+        // FUNGSI UTAMA: MENYIMPAN TRANSAKSI BARU KE DALAM LOCALSTORAGE
+        function catatTransaksiBaru() {
+            const nama = document.getElementById("namaSiswa").value.trim();
+            const jenis = document.getElementById("jenisTransaksi").value;
+            const nominal = parseInt(document.getElementById("nominalUang").value);
+
+            // Validasi Input Data
+            if (nama === "" || isNaN(nominal) || nominal <= 0) {
+                alert("Harap masukkan nama keterangan dan nominal uang yang valid!");
+                return;
+            }
+
+            // Buat struktur objek cetakan rekor data keuangan
+            const dataTransaksi = {
+                id: Date.now(), // ID unik berbasis milidetik waktu waktu saat ini
+                keterangan: nama,
+                tipe: jenis,
+                jumlah: nominal
+            };
+
+            // Ambil database kas lama, gabungkan dengan rekor transaksi baru
+            let databaseKas = JSON.parse(localStorage.getItem("classLedgerDB")) || [];
+            databaseKas.push(dataTransaksi);
+
+            // Tanam kembali array data ke memori permanen browser
+            localStorage.setItem("classLedgerDB", JSON.stringify(databaseKas));
+
+            // Bersihkan kotak input form pasca pencatatan sukses
+            document.getElementById("namaSiswa").value = "";
+            document.getElementById("nominalUang").value = "";
+
+            prosesHitungDanMuatUlang();
+        }
+
+        // FUNGSI KALKULASI TOTAL MATEMATIKA SALDO & MERENDER TABEL
+        function prosesHitungDanMuatUlang() {
+            const tbody = document.getElementById("tabelTransaksiBody");
+            tbody.innerHTML = "";
+
+            let databaseKas = JSON.parse(localStorage.getItem("classLedgerDB")) || [];
+            let akumulasiSaldo = 0;
+
+            if (databaseKas.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#64748b;">Belum ada riwayat transaksi kas kelas.</td></tr>`;
+                document.getElementById("totalSaldoDisplay").innerText = "Rp 0";
+                return;
+            }
+
+            // Loop Logika Kelas 10: Membaca riwayat data sekaligus menghitung total uang kas
+            databaseKas.forEach(item => {
+                const baris = document.createElement("tr");
+
+                // If-Else Percabangan: Jika uang masuk menambah saldo, jika uang keluar mengurangi saldo
+                let simbolTipe = "";
+                let classWarna = "";
+                if (item.tipe === "masuk") {
+                    akumulasiSaldo += item.jumlah;
+                    simbolTipe = "Masuk";
+                    classWarna = "masuk";
+                } else {
+                    akumulasiSaldo -= item.jumlah;
+                    simbolTipe = "Keluar";
+                    classWarna = "keluar";
+                }
+
+                // Render baris tabel HTML
+                baris.innerHTML = `
+                    <td><strong>${item.keterangan}</strong></td>
+                    <td class="${classWarna}">${simbolTipe}</td>
+                    <td class="${classWarna}">Rp ${item.jumlah.toLocaleString('id-ID')}</td>
+                    <td><span class="btn-hapus" onclick="hapusTransaksi(${item.id})">Hapus</span></td>
+                `;
+                tbody.appendChild(baris);
+            });
+
+            // Update papan total saldo akhir (Menerapkan format mata uang Rupiah)
+            document.getElementById("totalSaldoDisplay").innerText = "Rp " + akumulasiSaldo.toLocaleString('id-ID');
+        }
+
+        // FUNGSI MENGHAPUS DATA (DELETE) BERBASIS FILTERING ARRAY
+        function hapusTransaksi(idTarget) {
+            if (confirm("Apakah Anda yakin ingin menghapus rekor catatan kas ini?")) {
+                let databaseKas = JSON.parse(localStorage.getItem("classLedgerDB")) || [];
+                
+                // Logika Filter: Menyaring dan menyisakan data yang ID-nya tidak cocok dengan ID target hapus
+                databaseKas = databaseKas.filter(item => item.id !== idTarget);
+                
+                localStorage.setItem("classLedgerDB", JSON.stringify(databaseKas));
+                prosesHitungDanMuatUlang();
+            }
+        }
+
+        // Jalankan render otomatis saat aplikasi dibuka pertama kali
+        prosesHitungDanMuatUlang();
+    
+
+
+// ================= TAMBAHKAN TOMBOL LOGOUT =================
+document.addEventListener("DOMContentLoaded", function() {
+    const ledgerBox = document.querySelector(".ledger-box");
+
+    if (ledgerBox && !document.getElementById("logoutButton")) {
+        const logoutButton = document.createElement("button");
+        logoutButton.id = "logoutButton";
+        logoutButton.className = "logout-btn";
+        logoutButton.innerText = "LOGOUT";
+        logoutButton.onclick = logout;
+        ledgerBox.appendChild(logoutButton);
+    }
+
+    cekStatusLogin();
+});
+</script>
+
+</body>
+</html>
